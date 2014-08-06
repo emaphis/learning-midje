@@ -8,6 +8,6 @@ Check out Jay Fields essay on learning a language or library using [Unit testing
 
 Also check out Mike Clark's [blog](http://pragmaticstudio.com/blog/2005/3/18/ruby-learning-test-1-are-you-there-world).
 
-Ironically enough, Jay Fields is the author of [clojure expectations](https://github.com/marick/Midje/wiki) a different clojure unit testing frame work.
+Ironically enough, Jay Fields is the author of [clojure expectations](https://github.com/jaycfields/expectations) a different clojure unit testing frame work.
 
 Ed
