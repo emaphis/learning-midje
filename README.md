@@ -1,7 +1,7 @@
 learning-midje
 ==============
 
-This repository is for my learning midje.  I'm basically following along with the documentation on the [midje wiki](https://github.com/marick/Midje/wiki). I will add more experiments as I continue to learn midje, so this repository make become a usefull repository of midje knowledge presented as executable midge code.
+This repository is for my learning midje.  I'm basically following along with the documentation on the [midje wiki](https://github.com/marick/Midje/wiki). I will add more experiments as I continue to learn midje, so this repository make become a useful repository of midje knowledge presented as executable midge code.
 
 
 Check out Jay Fields essay on learning a language or library using [Unit testing](http://blog.jayfields.com/2010/08/clojuretest-introduction.html).

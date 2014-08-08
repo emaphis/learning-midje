@@ -1,6 +1,8 @@
 (ns learning-midje.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn first-element [sequence default]
+  (if (empty? sequence)
+    default
+    (first sequence)))
+
+
