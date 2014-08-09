@@ -21,52 +21,52 @@
 
 ;; a more complicated example
 (fact "addition has a unit eliment, 0, such that (+ x 0) => x"
-      (+ 0 0) => 0
-      (+ 1 0) => 1
-      (+ -1 0) => -1
-      (+ 1000000 0) => 1000000)
+  (+ 0 0) => 0
+  (+ 1 0) => 1
+  (+ -1 0) => -1
+  (+ 1000000 0) => 1000000)
 
 ;; the doc string cannot be veriifed but the four checkables can provide some evidence
 
 (fact "addition works in Clojure"
-      (+ 10 10) => 20
-      (+ 20 20) => 40)
+  (+ 10 10) => 20
+  (+ 20 20) => 40)
 
 (facts "'Facts' is synonymous with 'fact', I doesn't require multiple checkables"
-       (+ 1 1) => 2)
+  (+ 1 1) => 2)
 
 ;;; TODO:  fix namepace problem
 ;(silent-fact "Checkables fail individually."
-;             (+ 1 1) => 2
-;             (+ 2 2) => 3)
+;  (+ 1 1) => 2
+;  (+ 2 2) => 3)
 ;(note-that (fails 1 time), (fact-expect 2), (fact-actual 4))
 
 
 ;; Nesting facts:
 
 (fact 
-   (let [expected 2]
-     (+ 1 1) => expected   ; lexically  scoped
-     (* 2 1) => expected
-     (- 3 1) => expected))
+  (let [expected 2]
+    (+ 1 1) => expected   ; lexically  scoped
+    (* 2 1) => expected
+    (- 3 1) => expected))
 
 
 ;; facts can be nested
 (facts "about arithmetic"
-       (fact "there is addition"
-             (+ 1 1) => 2)
-       (fact "about subraction"
-             (- 1 1) => 0)
-       (fact "numbers have signs"
-             1 => pos?
-             -1 => neg?))
+  (fact "there is addition"
+    (+ 1 1) => 2)
+  (fact "about subraction"
+    (- 1 1) => 0)
+  (fact "numbers have signs"
+    1 => pos?
+    -1 => neg?))
 
 ;; facts is just a synonym of fact
 
 (comment
   (facts "about arithetic"
-         (fact "twice two is three"
-               (+ 2 2) => 3))
+    (fact "twice two is three"
+      (+ 2 2) => 3))
 ;  FAIL "about arithetic - twice two is three" at (facts.clj:69)
 ;    Expected: 3
 ;      Actual: 4
@@ -79,7 +79,7 @@
 ;; Facts can contain tables.
 (tabular "ways to arrive ar 2"
          (fact
-          (?op ?left ?right) => 2)
+           (?op ?left ?right) => 2)
          ?op ?left ?right
          +    1     1
          *    1     2
