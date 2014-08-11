@@ -50,8 +50,10 @@
 ;; truthy or falsey
 
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; checking sequential collections
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; https://github.com/marick/Midje/wiki/Checking-sequential-collections
 ;;; https://github.com/marick/Midje/blob/1.6/test/as_documentation/checkers__for_sequences.clj
 ;; just, contains, has-prefix, has-suffix, n-of
@@ -324,3 +326,42 @@
 (fact "a sequence of key/value pairs is OK on the right-hand side"
   {:a 1, :b 2} => (just [[:a 1] [:b 2]])
   (R. 1 nil) => (contains [[:x 1]]))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Checking sets.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; https://github.com/marick/Midje/wiki/Checking-sets
+;; https://github.com/marick/Midje/blob/1.5/test/as_documentation/checkers__for_sets.clj
+
+
+;;; Checking the shole set
+
+;; use 'just' for Midje's notion extended equality for the entire set, the sets
+;; order of elements is unspecified
+(fact "`just` provides extended equality for sets"
+  #{3 8 1} => (just odd? 3 even?))
+
+;; use 'n-of' to match a specific nunber of elements with the same properties
+(fact "checking properties of known number of elements"
+  #{1 3 5} => (three-of odd?))
+
+;; it the number of elements is irrelevant.
+(fact "number irrelevant"
+  #{1 3 5} => (has every? odd?))
+
+
+
+;;; checking a subset
+
+;; When you want to work with a subset of the original set, use contains.
+;; Here's an example that doesn't take advantage of extended equality:
+
+(fact "subsets of literal values"
+  #{1 2 3} => (contains 3))
+
+;; use extended equality:
+
+(fact "subset of checkers"
+  #{1 2 3} => (contains odd? even?))
