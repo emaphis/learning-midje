@@ -26,7 +26,8 @@
   (+ -1 0) => -1
   (+ 1000000 0) => 1000000)
 
-;; the doc string cannot be veriifed but the four checkables can provide some evidence
+;; the doc string cannot be veriifed but the four checkables can provide
+;; some evidence
 
 (fact "addition works in Clojure"
   (+ 10 10) => 20
