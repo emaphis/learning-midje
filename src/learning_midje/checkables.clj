@@ -211,3 +211,116 @@
   (fact [[1] [2]] => (partial every? (just [1]))))
 ;; This incorrectly checks out because of how the collection checkers
 ;; report failures. 
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Checking maps and records
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; https://github.com/marick/Midje/wiki/Checking-maps-and-records
+;;; https://github.com/marick/Midje/blob/1.6/test/as_documentation/checkers__for_maps_and_records.clj
+
+
+;; structures used for these examples:
+(defrecord R [x y])
+(defrecord NotR [x y])
+
+;; Using a map on the right-hand side of a prediction means you care about
+;; contents, not type:
+
+(fact 
+    ;; That the left-hand side below is a record is irrelevant:
+    (R. 1 2) => {:x 1, :y 2}
+    ;; The contents of the left are compared to the right in exactly
+    ;; the same way as if both sides were maps:
+    {:x 1, :y 2} => {:x 1, :y 2})
+
+;; when testing records, you must use a record on the rhs.
+(fact
+  "using a record on the right implies that you care about *both* contents and type"
+;  {:x 1, :y 2} =not=> (R. 1 2)  ;; meh, =not=> doesn't work, here
+;  (NotR. 1 2)  =not=> (R. 1 2)
+  (R. 1 2)     =>     (R. 1 2))
+;; A record on the right of the arrow means the value on the left must be
+;; of the same type.
+
+(fact (R. 1 2) =not=> (R. 1 3333333))
+
+
+;;; just - applies extended equality to values
+
+;; Use just if you want a more flexible check of values than equality.
+(fact "`just` provides extended equality"
+  {:a 1, :b 2, :c "some text"} => (just {:a odd?, :b 2, :c #"text"}))
+
+
+;;; contains - works with subsets of maps or records
+
+;; use 'contains' when uo don't coare about parts of a map or record:
+
+(fact "contains ignores unmentioned keys"
+  (R. 1 'IGNORE!) => (contains {:x 1}))
+
+;; 'contains' provides extended equality
+
+(fact "checker functions provide extended equality"
+  (R. 1 'IGNORE) => (contains {:x odd?})
+  {:a 1, :b 2, :c "some text"} => (just {:a odd?, :b 2, :c #"text"})
+  {:a 1, :b 3} => (has every? odd?))
+
+;;; Here are some examples of using collection checkers with maps and records.
+
+(fact "`contains` and `just` work on key-value pairs"
+  {:x 1, :y 'IGNORE} => (contains {:x 1})
+  (R. 1 'IGNORE!) => (contains {:x 1})
+  {:x 1, :y 'IGNORE} =not=> (just {:x 1})
+  (R. 1 'IGNORE!) =not=> (just {:x 1}))
+
+
+;;; use combining checker if you want to be specific on what the left
+;;; hand side contains
+
+(fact
+  (R. 1 'IGNORE!) => (every-checker #(instance? R %) (contains {:x 1}))
+  {:x 1, :y 2} =not=> (every-checker #(instance? R %) (contains {:x 1}))
+  (R. 2 'IGNORE) =not=> (every-checker #(instance? R %) (contains {:x 1})))
+
+(fact "ways to make claims about keys"
+  (keys {:x 1, :y 1}) => (just #{:x :y}) ;; Contains every key
+  {:x 1, :y 1} => (just {:x anything, :y anything}) ;; a variant
+  (keys {:x 1, :y 1}) => (contains #{:x}) ;; Contains some of the keys
+  {:x 1, :y 1} => (contains {:x anything}))
+
+;; also  key/value pairs
+(fact "a sequence of key/value pairs is OK on the right-hand side"
+  {:a 1, :b 2} => (just [[:a 1] [:b 2]])
+  (R. 1 nil) => (contains [[:x 1]]))
+
+
+;;; has -  works with quantifiers and values
+
+;; has lets you make quantified ("every" "some") claims about the values
+;; of a map or record:
+
+(fact "`'has` quantifies over values"
+  {:a 1, :b 3} => (has every? odd?))
+
+;; claims about keys are complicated
+
+(fact "ways to make claims about keys"
+  (keys {:x 1, :y 1}) => (just #{:x :y})            ;; Contains every key
+  {:x 1, :y 1} => (just {:x anything, :y anything}) ;; a variant
+
+  (keys {:x 1, :y 1}) => (contains #{:x}) ;; Contains some of the keys
+  {:x 1, :y 1} => (contains {:x anything}))
+
+
+;;; Map entries
+
+;; The just and contains right-hand sides can take arrays of pairs
+;; (or Java MapEntry objects) instead of a map or record:
+
+(fact "a sequence of key/value pairs is OK on the right-hand side"
+  {:a 1, :b 2} => (just [[:a 1] [:b 2]])
+  (R. 1 nil) => (contains [[:x 1]]))
