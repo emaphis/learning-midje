@@ -3,6 +3,10 @@
 ;            [midje.test-util :refer :all]  ;; TODO: fix namespace problem
             [midje.config :as config]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; basic syntax
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; from the [midje guide](https://github.com/marick/Midje/wiki/Checkables)
 ;;;
 
@@ -48,6 +52,30 @@
 ;;; predefined:
 
 ;; truthy or falsey
+(fact "true is truthy" true => truthy)
+(fact "false is not truthy" false =not=> truthy)
+(fact "nil is not true(thy)" nil => falsey)
+(fact "but nil is != to false"
+  (= nil false) => falsey)
+
+(fact "integers are truthy" 5 => truthy)
+
+;;; user defined functions as checkers
+
+(defn each-element-is-one-of [expected-elements]
+  (fn [actual]
+    (every? (set expected-elements) actual)))
+
+
+(fact [1 2] => (each-element-is-one-of [1 2 3 4]))
+
+
+;;; how to check anything
+
+;;  imply that the check is irrelevant
+(fact "I don't care" 2 => anything)
+(fact "I realy don't care" 2 => irrelevant)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
